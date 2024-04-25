@@ -7,22 +7,22 @@ CREATE TABLE "departments" (
 );
 
 CREATE TABLE "dept_emp" (
-    "emp_no" INT(20)   NOT NULL,
-    "dept_no" VARCHAR(20)   NOT NULL
+    "emp_no" INT NOT NULL,
+    "dept_no" VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE "dept_manager" (
-    "dept_no" VARCHAR(20)   NOT NULL,
-    "emp_no" INT(20)   NOT NULL
+    "dept_no" VARCHAR(20) NOT NULL,
+    "emp_no" INT NOT NULL
 );
 
 CREATE TABLE "employees" (
-    "emp_no" INT(20)   NOT NULL,
+    "emp_no" INT NOT NULL,
     "emp_title_id" VARCHAR(20)   NOT NULL,
     "birth_date" DATE   NOT NULL,
     "first_name" VARCHAR(100)   NOT NULL,
     "last_name" VARCHAR(100)   NOT NULL,
-    "sex" ENUM('M','F')   NOT NULL,
+    "sex" VARCHAR(1) CHECK (sex IN ('M', 'F')) NOT NULL,
     "hire_date" DATE   NOT NULL,
     CONSTRAINT "pk_employees" PRIMARY KEY (
         "emp_no"
@@ -30,8 +30,8 @@ CREATE TABLE "employees" (
 );
 
 CREATE TABLE "salaries" (
-    "emp_no" INT(20)   NOT NULL,
-    "salary" INT(20)   NOT NULL
+    "emp_no" INT NOT NULL,
+    "salary" INT NOT NULL
 );
 
 CREATE TABLE "titles" (
@@ -41,6 +41,25 @@ CREATE TABLE "titles" (
         "title_id"
      )
 );
+
+-- IMPORTANT, Change the user path to where the info is stored at 
+-- Import data into "departments" table from CSV
+COPY departments FROM 'C:\Users\Javier Alarcon\Desktop\BOOTCAMP\Week9\Homework\sql-challenge\EmployeeSQL\Data\departments.csv' DELIMITER ',' CSV HEADER;
+
+-- Import data into "dept_emp" table from CSV
+COPY dept_emp FROM 'C:\Users\Javier Alarcon\Desktop\BOOTCAMP\Week9\Homework\sql-challenge\EmployeeSQL\Data\dept_emp.csv' DELIMITER ',' CSV HEADER;
+
+-- Import data into "dept_manager" table from CSV
+COPY dept_manager FROM 'C:\Users\Javier Alarcon\Desktop\BOOTCAMP\Week9\Homework\sql-challenge\EmployeeSQL\Data\dept_manager.csv' DELIMITER ',' CSV HEADER;
+
+-- Import data into "employees" table from CSV
+COPY employees FROM 'C:\Users\Javier Alarcon\Desktop\BOOTCAMP\Week9\Homework\sql-challenge\EmployeeSQL\Data\employees.csv' DELIMITER ',' CSV HEADER;
+
+-- Import data into "salaries" table from CSV
+COPY salaries FROM 'C:\Users\Javier Alarcon\Desktop\BOOTCAMP\Week9\Homework\sql-challenge\EmployeeSQL\Data\salaries.csv' DELIMITER ',' CSV HEADER;
+
+-- Import data into "titles" table from CSV
+COPY titles FROM 'C:\Users\Javier Alarcon\Desktop\BOOTCAMP\Week9\Homework\sql-challenge\EmployeeSQL\Data\titles.csv' DELIMITER ',' CSV HEADER;
 
 ALTER TABLE "dept_emp" ADD CONSTRAINT "fk_dept_emp_emp_no" FOREIGN KEY("emp_no")
 REFERENCES "employees" ("emp_no");
@@ -59,3 +78,4 @@ REFERENCES "titles" ("title_id");
 
 ALTER TABLE "salaries" ADD CONSTRAINT "fk_salaries_emp_no" FOREIGN KEY("emp_no")
 REFERENCES "employees" ("emp_no");
+
